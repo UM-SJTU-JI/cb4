@@ -9,6 +9,8 @@ import logging
 import pytz
 import yaml
 import zipfile
+import sys
+import binascii
 from bson import objectid
 
 from vj4 import app
@@ -979,11 +981,17 @@ class ContestMosstHandler(ContestMixin, base.Handler):
         wildcards = self.split_tags(wildcards)
 
         _logger.info('Submit Moss for %s', tid)
-        _logger.info(tid.binary)
         # moss_url = await moss.moss_test(rdocs, language=language, wildcards=wildcards, ignore_limit=ignore_limit)
         # if moss_url:
         #     await contest.update_moss_result(self.domain_id, document.TYPE_HOMEWORK, tid, moss_url=moss_url)
-        moss_submit.delay(language, wildcards, ignore_limit, self.domain_id, document.TYPE_HOMEWORK, tid.binary)
+        if sys.version_info[0] == 3:
+            tid_str = binascii.hexlify(self.__id).decode()
+        else:
+            tid_str = binascii.hexlify(self.__id)
+
+        _logger.info(tid_str)
+
+        moss_submit.delay(language, wildcards, ignore_limit, self.domain_id, document.TYPE_HOMEWORK, tid_str)
         _logger.info('Moss task for %s submitted to Celery', tid)
 
         self.json_or_redirect(self.reverse_url('contest_system_test', ctype=ctype, tid=tid))
