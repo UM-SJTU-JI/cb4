@@ -1,9 +1,10 @@
-from celery import Celery
+import os
 import time
 
-from vj4.util import options
+from celery import Celery
 
-app = Celery('tasks', backend='rpc://', broker='pyamqp://guest@{}//'.format(options.mq_host))
+app = Celery('tasks', backend='rpc://', broker='pyamqp://guest@{}//'.format(os.getenv("MQ_HOST", default='localhost')))
+
 
 @app.task
 def celery_test():
