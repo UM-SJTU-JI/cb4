@@ -54,5 +54,5 @@ async def moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid_
 
 
 @app.task
-def moss_submit(language, wildcards, ignore_limit, domain_id, doc_type, tid_str):
-    asyncio.run(moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid_str))
+async def moss_submit(language, wildcards, ignore_limit, domain_id, doc_type, tid_str):
+    asyncio.get_event_loop().run_until_complete(moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid_str))
