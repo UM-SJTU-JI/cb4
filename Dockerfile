@@ -51,7 +51,9 @@ ENV HOST="localhost" \
     DB_NAME="cb4-production" \
     MQ_HOST="localhost" \
     MQ_VHOST="/" \
-    MOSS_USER_ID=987654321
+    MOSS_USER_ID=987654321 \
+    LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8
 
 EXPOSE $PORT
 
