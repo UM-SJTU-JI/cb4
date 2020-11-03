@@ -985,9 +985,9 @@ class ContestMosstHandler(ContestMixin, base.Handler):
         # if moss_url:
         #     await contest.update_moss_result(self.domain_id, document.TYPE_HOMEWORK, tid, moss_url=moss_url)
         if sys.version_info[0] == 3:
-            tid_str = binascii.hexlify(self.__id).decode()
+            tid_str = binascii.hexlify(tid.binary).decode()
         else:
-            tid_str = binascii.hexlify(self.__id)
+            tid_str = binascii.hexlify(tid.binary)
 
         _logger.info(tid_str)
 

@@ -1,4 +1,5 @@
 import asyncio
+import bson
 from celery import Celery
 
 from vj4 import constant
@@ -15,7 +16,8 @@ def celery_test():
     return
 
 
-async def moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid):
+async def moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid_str):
+    tid = bson.objectid.ObjectId(tid_str)
     tdoc, tsdocs = await contest.get_and_list_status(domain_id, doc_type, tid)
     result = []
 
@@ -52,5 +54,5 @@ async def moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid)
 
 
 @app.task
-def moss_submit(language, wildcards, ignore_limit, domain_id, doc_type, tid):
-    asyncio.run(moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid))
+def moss_submit(language, wildcards, ignore_limit, domain_id, doc_type, tid_str):
+    asyncio.run(moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid_str))
