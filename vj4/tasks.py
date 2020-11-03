@@ -1,9 +1,8 @@
-import os
 import time
 
 from celery import Celery
 
-app = Celery('tasks', backend='rpc://', broker='pyamqp://guest@{}//'.format(os.getenv("MQ_HOST", default='localhost')))
+app = Celery('tasks', backend='rpc://', broker='pyamqp://guest@rabbitmq//')
 
 
 @app.task
