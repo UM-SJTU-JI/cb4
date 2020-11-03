@@ -13,8 +13,12 @@ def celery_test():
     return
 
 
-@app.task
-def moss_submit(rdocs, language, wildcards, ignore_limit, domain_id, doc_type, tid):
+async def moss_send(rdocs, language, wildcards, ignore_limit, domain_id, doc_type, tid):
     moss_url = await moss.moss_test(rdocs, language=language, wildcards=wildcards, ignore_limit=ignore_limit)
     if moss_url:
         await contest.update_moss_result(domain_id, doc_type, tid, moss_url=moss_url)
+
+
+@app.task
+def moss_submit(rdocs, language, wildcards, ignore_limit, domain_id, doc_type, tid):
+    asyncio.run(moss_send(rdocs, language, wildcards, ignore_limit, domain_id, doc_type, tid))
