@@ -55,6 +55,8 @@ ENV HOST="localhost" \
 
 EXPOSE $PORT
 
+RUN celery -A vj4.tasks worker --loglevel=info
+
 CMD python3 -m vj4.server \
     --listen=http://$HOST:$PORT \
     --url-prefix=$URL_PREFIX \

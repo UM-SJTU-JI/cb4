@@ -26,6 +26,7 @@ from vj4.model.adaptor import problem
 from vj4.handler import base
 from vj4.util import pagination, options
 from vj4.util.misc import filter_language, filter_content_type
+from vj4.tasks import celery_test
 
 _logger = logging.getLogger(__name__)
 
@@ -978,8 +979,10 @@ class ContestMosstHandler(ContestMixin, base.Handler):
         wildcards = self.split_tags(wildcards)
 
         _logger.info('Submit Moss for %s', tid)
-        moss_url = await moss.moss_test(rdocs, language=language, wildcards=wildcards, ignore_limit=ignore_limit)
-        if moss_url:
-            await contest.update_moss_result(self.domain_id, document.TYPE_HOMEWORK, tid, moss_url=moss_url)
+        # moss_url = await moss.moss_test(rdocs, language=language, wildcards=wildcards, ignore_limit=ignore_limit)
+        # if moss_url:
+        #     await contest.update_moss_result(self.domain_id, document.TYPE_HOMEWORK, tid, moss_url=moss_url)
+        celery_test.delay()
+        _logger.info('Moss task for %s submitted', tid)
 
         self.json_or_redirect(self.reverse_url('contest_system_test', ctype=ctype, tid=tid))

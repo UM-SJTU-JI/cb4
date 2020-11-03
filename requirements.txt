@@ -15,3 +15,4 @@ git+https://github.com/iceb0y/aiomongo
 oauthlib
 mosspy
 rarfile
+celery==5.0.2
