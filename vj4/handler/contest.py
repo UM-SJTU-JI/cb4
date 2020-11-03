@@ -975,14 +975,14 @@ class ContestMosstHandler(ContestMixin, base.Handler):
             self.check_perm(builtin.PERM_EDIT_HOMEWORK)
         doc_type = constant.contest.CTYPE_TO_DOCTYPE[ctype]
 
-        rdocs = await self.get_latest_records(doc_type, tid)
+        # rdocs = await self.get_latest_records(doc_type, tid)
         wildcards = self.split_tags(wildcards)
 
         _logger.info('Submit Moss for %s', tid)
         # moss_url = await moss.moss_test(rdocs, language=language, wildcards=wildcards, ignore_limit=ignore_limit)
         # if moss_url:
         #     await contest.update_moss_result(self.domain_id, document.TYPE_HOMEWORK, tid, moss_url=moss_url)
-        moss_submit.delay(rdocs, language, wildcards, ignore_limit, self.domain_id, document.TYPE_HOMEWORK, tid)
+        moss_submit.delay(language, wildcards, ignore_limit, self.domain_id, document.TYPE_HOMEWORK, tid)
         _logger.info('Moss task for %s submitted to Celery', tid)
 
         self.json_or_redirect(self.reverse_url('contest_system_test', ctype=ctype, tid=tid))
