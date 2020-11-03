@@ -17,6 +17,7 @@ def celery_test():
 
 
 async def moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid_str):
+    print('moss_send entered')
     tid = bson.objectid.ObjectId(tid_str)
     tdoc, tsdocs = await contest.get_and_list_status(domain_id, doc_type, tid)
     result = []
@@ -54,5 +55,7 @@ async def moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid_
 
 
 @app.task
-async def moss_submit(language, wildcards, ignore_limit, domain_id, doc_type, tid_str):
-    asyncio.get_event_loop().run_until_complete(moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid_str))
+def moss_submit(language, wildcards, ignore_limit, domain_id, doc_type, tid_str):
+    print('moss_submit entered')
+    asyncio.get_event_loop().run_until_complete(
+        moss_send(language, wildcards, ignore_limit, domain_id, doc_type, tid_str))
