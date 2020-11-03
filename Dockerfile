@@ -57,7 +57,7 @@ ENV HOST="localhost" \
 
 EXPOSE $PORT
 
-CMD supervisord -c ./supervisord.conf -d ./ && python3 -m vj4.server \
+CMD pwd && python3 -m vj4.server \
     --listen=http://$HOST:$PORT \
     --url-prefix=$URL_PREFIX \
     --oauth=$OAUTH \
